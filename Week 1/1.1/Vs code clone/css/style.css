@@ -1,0 +1,96 @@
+* {
+    background-color: #0E0E0E;
+}
+
+#nav{
+    display: flex;
+    /* align-items: center; */
+    /* align-content: center; */
+    justify-content: space-between;
+    position: sticky;
+    height: 58px;
+    flex-direction: row;
+    /* flex-flow: wrap; */
+    
+}
+
+/* #nav{
+    display: flext;
+    justify-content: space-between;
+} */
+
+html{
+    scroll-behavior: smooth;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

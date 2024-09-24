@@ -1,0 +1,132 @@
+<!--  My code
+<html>
+<body>
+    <h2>Todo List</h2>
+
+    <div id="todoParent">
+        <h4>Below is the first todo</h4>
+    </div>
+
+    <input type="text" id="input"/>
+    <button onClick="addTodo()" >Add todo </button>
+
+    <div id="buttonParent" style="flex: row; padding: 20px 50px;" >
+        <Button onclick="editTodo()">Edit Todo</Button>
+    <button onclick="deleteTodo()">Delete Todo </button>
+    </div>
+
+    <script src="./index.js" />
+</body>
+</html> -->
+
+ <!-- code to debugg. => solved by watching the lecture.  --> 
+ <!-- <html>
+
+ <body>
+   <input type="text"></input>
+   <button onclick="addTodo()">Add todo!</button>
+ </body>
+ <script>
+   let ctr = 1;
+   function deleteTodo(index) {
+     const element = document.getElementById(index);
+     element.parentNode.removeChild(element);
+   }
+ 
+   function addTodo() {
+     const inputEl = document.querySelector("input");
+     const value = inputEl.value;
+ 
+     const newDivEl = document.createElement("div");
+     newDivEl.setAttribute("id", ctr);
+     newDivEl.innerHTML = "<div>" + value + '</div><button onclick="deleteTodo(' + ctr + ')">delete</button>';
+     
+     document.querySelector("body").appendChild(newDivEl)
+     ctr = ctr + 1;
+   }
+ </script>
+ 
+ </html> -->
+
+ <html></html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Todo List</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <h1>Todo list</h1>
+  <div id="todos">
+    <div id="todo-1">
+      <h4>1. Take class</h4>
+      <button onclick="deleteTodo(1)">Delete</button>
+    </div>
+    <div id="todo-2">
+      <h4>2. Go out to eat</h4>
+      <button onclick="deleteTodo(2)">Delete</button>
+    </div>
+  </div>
+  <div>
+    <input id="inp" type="text">
+    <button onclick="addTodo()">Add Todo</button>
+  </div>
+
+  <script>
+    let currentIndex = 3;
+
+    function addTodo() {
+      const inputEl = document.getElementById("inp");
+      const todoText = inputEl.value.trim();
+
+      if (todoText === '') {
+        alert('Please enter a todo item.');
+        return;
+      }
+
+      const parentEl = document.getElementById("todos");
+
+      // Create new todo div
+      const newTodo = document.createElement('div');
+      newTodo.setAttribute("id", 'todo-' + currentIndex);
+
+      // Create new heading element
+      const newHeading = document.createElement('h4');
+      newHeading.textContent = currentIndex + '. ' + todoText;
+
+      // Create new button element
+      const newButton = document.createElement('button');
+      newButton.textContent = 'Delete';
+      newButton.setAttribute("onclick", "deleteTodo(" + currentIndex + ")");
+
+      // Append elements to the new todo div
+      newTodo.appendChild(newHeading);
+      newTodo.appendChild(newButton);
+
+      // Append new todo to the parent element
+      parentEl.appendChild(newTodo);
+
+      // Increment the index for the next todo item
+      currentIndex++;
+
+      // Clear the input field
+      inputEl.value = '';
+    }
+
+    function deleteTodo(index) {
+      const element = document.getElementById("todo-" + index);
+      if (element) {
+        element.parentNode.removeChild(element);
+      }
+    }
+  </script>
+</body>
+
+</html>
+ 
+ 
+ 
+ 
+ 

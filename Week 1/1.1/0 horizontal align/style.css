@@ -1,0 +1,13 @@
+#mainDiv{
+    display: flex;
+    background-color: red;
+    width: 1200px;
+    /* align-items: center; */
+    /* align-content: center; */
+    justify-content: center;
+    
+}
+
+.content{
+    height: 500px;
+}
