@@ -29,13 +29,24 @@ app.get("/get-user-health", function (req, res) {
 
 app.post("/add-health", function (req, res) {
     const healthy = req.body.healthy;
-    // console.log(JSON.stringify(healthy.length));
+    console.log(JSON.stringify(healthy));
     users[0].kidney = [...users[0].kidney, { healthy: healthy }]
     res.send(JSON.stringify(users));
 })
 
-app.put("/get-user-health", function (req, res) {
-    res.send(JSON.stringify(users));
+app.put("/update-user-health", function (req, res) {
+    // res.send(JSON.stringify(users));
+
+    Object.keys(users).forEach(key => {
+        const value = users[key].kidney;
+        for (let i = 0; i < value.length; i++) {
+            if (value == false) {
+                value = true;
+                break;
+            }
+        }
+    })
+    res.send({ message: "updated" })
 });
 
 app.delete("/get-user-health", function (req, res) {
