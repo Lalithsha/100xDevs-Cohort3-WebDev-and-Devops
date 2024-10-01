@@ -5,6 +5,12 @@ const app = express()
 
 let todos = [];
 
+// Data inside todos looks like:
+/* const newTodo = {
+    todo: "todo",
+    id: id
+} */
+
 app.use(express.json());
 
 app.get('/', function (req, res) {
