@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Auth Website</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+    <script>
+
+        
+        async function signup(){
+            const username = document.getElementById("signup-username").value;
+            const password = document.getElementById("signup-password").value;
+
+            // axios
+            await axios.post("http://localhost:3000/signup",{
+                username,
+                password
+            })
+            alert("You are signed up")
+        }
+
+        async function signin(){
+            const username = document.getElementById("signin-username").value;
+            const password = document.getElementById("signin-password").value;
+
+            // axios
+            const response = await axios.post("http://localhost:3000/signin",{
+                username,
+                password
+            })
+
+            localStorage.setItem("token", response.data.token);
+            getUserInformation();
+            alert("You are signed in")
+        }
+        
+        async function getUserInformation(){
+            console.log("Get information is called");
+            
+            const response = await axios.get("http://localhost:3000/me",{
+                headers:{
+                    token: localStorage.getItem("token")
+                }
+            })
+
+            console.log(`The response is : ${JSON.stringify(response)}`);
+            
+            // || response.data=="User not found!"
+            if(response===undefined || !response || response.data=="User not found!" || response.data==''){
+                hideInformation();
+            }else {
+                document.getElementById("information").innerHTML = "Username: "+response.data.username+" Password: "+response.data.password;
+                hideSignUp_and_signIn();
+            }
+            
+        }
+
+        
+
+        
+        function logout(){
+            localStorage.removeItem("token");
+        }
+        
+        function hideSignUp_and_signIn(){
+           
+            // Sign-up Part
+            document.getElementById('signup-username').style.visibility = 'hidden';
+            document.getElementById('signup-password').style.visibility = 'hidden';
+            document.getElementById('signup_text').style.visibility = 'hidden';
+            document.getElementById('signup-button').style.visibility = 'hidden';
+
+            // Sign-in part
+            document.getElementById('signin_text').style.visibility = 'hidden';
+            document.getElementById('signin-username').style.visibility = 'hidden';
+            document.getElementById('signin-password').style.visibility = 'hidden';
+            document.getElementById('signin-button').style.visibility = 'hidden';
+
+        }
+
+        function hideInformation(){
+            console.log("Hidding the content");
+            
+            document.getElementById('information_text').style.visibility = 'hidden';
+            document.getElementById('information').style.visibility = 'hidden';
+            document.getElementById('logout_button').style.visibility = 'hidden';
+        }
+        
+    </script>
+</head>
+<body>
+    <div>
+        <span id="signup_text" >Sign-up</span>
+        <input id="signup-username" type="text" name="username" placeholder="Username">
+        <input id="signup-password" type="password" name="password" placeholder="Password">
+        <button id="signup-button" onclick="signup()">Submit</button>
+    </div>
+    <div>
+        <span id="signin_text" >Sign-in</span>
+        <input id="signin-username" type="text" name="username" placeholder="Username">
+        <input id="signin-password" type="password" name="password" placeholder="Password">
+        <button id="signin-button"  onclick="signin()">Submit</button>
+    </div>
+    <div>
+        <span id="information_text" >User information: </span>
+        <div id="information"></div>
+    </div>
+    <div>
+        <button id="logout_button" onclick="logout()">Logout</button>
+    </div>
+</body>
+</html>
