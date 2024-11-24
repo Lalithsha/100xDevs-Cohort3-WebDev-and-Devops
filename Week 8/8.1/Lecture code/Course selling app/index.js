@@ -11,6 +11,7 @@ mongoose.connect("mongodb+srv://lalithsharma:test1234@cluster0.98btq.mongodb.net
 const app = express();
 app.use(express.json());
 
+// End point to sign up
 app.post("/user/signup", async function (req, res) {
     res.json({
         message: "signup endpoint"
@@ -18,6 +19,7 @@ app.post("/user/signup", async function (req, res) {
 });
 
 
+// End point to sign in for course selling app
 app.post("/user/signin", async function (req, res) {
     res.json({
         message: "signin endpoint"
