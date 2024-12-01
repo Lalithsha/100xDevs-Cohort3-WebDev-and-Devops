@@ -2,13 +2,13 @@ const { Router } = require("express")
 
 const courseRouter = Router();
 
-app.get("/purchase", async function (req, res) {
+courseRouter.get("/purchase", async function (req, res) {
     res.json({
         message: "purchase courses endpoint"
     })
 });
 
-app.get("/preview", async function (req, res) {
+courseRouter.get("/preview", async function (req, res) {
     res.json({
         message: "All courses endpoint"
     })
@@ -16,7 +16,7 @@ app.get("/preview", async function (req, res) {
 
 
 
-module.export = {
+module.exports = {
     courseRouter
 }
 

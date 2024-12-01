@@ -13,8 +13,8 @@ const User = new mongoose.Schema({
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.ObjectId;
 
-// Define the User schema with fields for email, password, and name
 const User = new Schema({
+    // Define the User schema with fields for email, password, and name
     email: { type: String, unique: true }, // Make email unique to avoid duplicate entries
     password: String,
     name: String,
