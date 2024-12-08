@@ -4,9 +4,11 @@ const { z } = require("zod");
 const bcrypt = require('bcryptjs');
 const { adminModel, courseModel } = require("../db")
 const jwt = require("jsonwebtoken");
-import { JWT_ADMIN_PASSWORD } from "../config"
-import { adminMiddleware } from "../middleware/admin.middleware";
+// import { JWT_ADMIN_PASSWORD } from "../config"
+const { JWT_ADMIN_SECRET } = require("../config");
+const { adminMiddleware } = require("../middleware/admin.middleware");
 
+// const JWT_ADMIN_PASSWORD = process.env.JWT_ADMIN_PASSWORD;
 adminRouter.post("/signup", async function (req, res) {
 
     const requiredBody = z.object({
@@ -71,9 +73,14 @@ adminRouter.post("/signin", async function (req, res) {
 
 
         if (passwordMatch) {
+
+            /* console.log(process.env.JWT_ADMIN_PASSWORD)
+            console.log(admin._id.toString()); */
+
             const token = jwt.sign({
-                id: admin._id.toString()
-            }, JWT_ADMIN_PASSWORD)
+                id: admin._id
+            }, process.env.JWT_ADMIN_SECRET)
+
             console.log(`The signed token is: ${token}`)
             // TODO: Do cookie logic
             res.json({
@@ -112,13 +119,20 @@ adminRouter.post("/course", adminMiddleware, async function (req, res) {
         creatorId: adminId
     })
 
+    res.json({
+        message: "Course created",
+        courseId: course._id
+    })
+
 });
 
-// End point update a title, description, imageUrl, price of a course.
+/* // End point update a title, description, imageUrl, price of a course.
 adminRouter.put("/course", adminMiddleware, async function (req, res) {
     const adminId = req.userId;
 
     const { title, description, imageUrl, price, courseId } = req.body;
+
+    console.log(`The adminId is ${adminId} & courseId is ${courseId}`)
 
     const course = await courseModel.updateOne({
         // finds the course based on id based and only updates the value where createrId is himself (admin). cannot update any one admin's course
@@ -136,12 +150,42 @@ adminRouter.put("/course", adminMiddleware, async function (req, res) {
         courseId: course._id
     })
 
-});
+}); */
+
+adminRouter.put("/course", adminMiddleware, async function (req, res) {
+    const adminId = req.userId;
+
+    const { title, description, imageUrl, price, courseId } = req.body;
+
+    // creating a web3 saas in 6 hours
+    const course = await courseModel.updateOne({
+        _id: courseId,
+        creatorId: adminId
+    }, {
+        title: title,
+        description: description,
+        imageUrl: imageUrl,
+        price: price
+    })
+
+    res.json({
+        message: "Course updated",
+        courseId: course._id
+    })
+})
 
 // End point to sign in for course selling app
-adminRouter.post("/course/bulk", async function (req, res) {
+adminRouter.post("/course/bulk", adminMiddleware, async function (req, res) {
+
+    const adminId = req.userId;
+
+    const courses = await courseModel.find({
+        createrId: adminId
+    })
+
     res.json({
-        message: "signin endpoint"
+        message: "signin endpoint",
+        courses
     })
 });
 

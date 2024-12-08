@@ -4,8 +4,11 @@ const jwt = require("jsonwebtoken");
 const { userModel } = require("../db");
 const userRouter = Router();
 const bcrypt = require('bcryptjs');
-import { JWT_USER_PASSWORD } from "../config"
+// import { JWT_USER_PASSWORD } from "../config"
+const { JWT_USER_PASSWORD } = require("../config");
+const { userMiddleware } = require("../middleware/user.middleware");
 
+// const JWT_USER_PASSWORD = process.env.JWT_USER_PASSWORD;
 // End point to sign up
 userRouter.post("/signup", async function (req, res) {
 
@@ -101,9 +104,17 @@ userRouter.post("/signin", async function (req, res) {
 });
 
 
-userRouter.get("/purchases", async function (req, res) {
+userRouter.get("/purchases", userMiddleware, async function (req, res) {
+
+    const userId = req.userId;
+
+    const purchases = await userModel.find({
+        userId
+    })
+
     res.json({
-        message: "purchased course endpoint"
+        message: "purchased course endpoint",
+        purchases
     })
 });
 

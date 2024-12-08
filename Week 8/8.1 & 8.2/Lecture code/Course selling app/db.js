@@ -34,6 +34,8 @@ const Purchases = new Schema({
     userId: { type: Schema.Types.ObjectId, ref: 'user' }
 })
 
+/* course content , video 1, video 2, pdf 1, pdf 2 */
+
 const userModel = mongoose.model("user", User);
 const courseModel = mongoose.model("course", Course)
 const adminModel = mongoose.model("admin", Admin);
