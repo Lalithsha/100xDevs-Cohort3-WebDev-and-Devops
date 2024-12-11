@@ -6,7 +6,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 // const { z } = require("zod");
-
+const cookieParser = require("cookie-parser");
 const { userRouter } = require("./routes/user")
 const { courseRouter } = require("./routes/course")
 const { adminRouter } = require("./routes/admin")
@@ -16,6 +16,9 @@ require('dotenv').config()
 
 const app = express();
 app.use(express.json());
+
+
+app.use(cookieParser());
 
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/admin", adminRouter)
