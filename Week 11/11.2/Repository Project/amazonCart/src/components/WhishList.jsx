@@ -8,6 +8,9 @@ function WhishList() {
       <Header/>
       <div className='py-10 p-5 m-5' >
         <Sidebar/>
+        <main  className='border border-white-600 m-8'  >
+
+        </main>
       </div>
     </div>
   )
