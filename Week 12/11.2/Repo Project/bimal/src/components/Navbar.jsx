@@ -1,14 +1,14 @@
 
 function Navbar() {
   return (
-    <nav className='flex flex-row items-center justify-between mx-auto px-2'>
+    <nav className='flex flex-row items-center justify-between mx-auto px-4 max-w-7xl py-4'>
         <a href="/">
       <h1 className="tracking-tight text-orange-600 text-2xl" >
         bimal
       </h1>
       </a>
 
-      <div className="flex items-center   gap-4"  >
+      <div className="flex items-center gap-4"  >
         <a href="/products" >
             Products
         </a>

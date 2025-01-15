@@ -1,12 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+import PropTypes from 'prop-types';
 import App from './App.jsx'
-
-/* // Import Google Fonts using @fontsource
-import "@fontsource/dm-sans/400.css";
-import "@fontsource/dm-sans/500.css";
-import "@fontsource/dm-sans/700.css"; */
 
 const RootLayout = ({ children }) => {
   return (
@@ -16,12 +12,15 @@ const RootLayout = ({ children }) => {
   );
 };
 
+RootLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RootLayout>
+    <RootLayout>   
     <App />
-
     </RootLayout>
   </StrictMode>,
 )
