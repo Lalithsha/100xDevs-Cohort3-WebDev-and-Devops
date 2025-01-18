@@ -2,9 +2,12 @@
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg' */
 import './App.css'
-import AppLayout from './components/AppLayout'
+// import AppLayout from './components/AppLayout'
 import Hero from './components/Hero'
 import Navbar from './components/Navbar'
+import Content from './components/Content'
+import Footer from './components/Footer'
+
 
 function App() {
   
@@ -13,6 +16,8 @@ function App() {
     <>
       <Navbar/>
       <Hero/>
+      <Content/>
+      <Footer/>
       </>
   )
 }
