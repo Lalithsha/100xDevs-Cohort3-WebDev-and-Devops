@@ -25,7 +25,7 @@ function WebinarList() {
       </div>
       <div className="mt-4 space-y-4" >
               {webinars.map((webinar,index)=>(
-                <div key={index} className={`flex items-center pb-2 ${index !==webinar.length-1 && 'border-b-2'}`} >
+                <div key={index} className={`flex items-center pb-2  ${index !==webinars.length-1 && 'border-b-2 border-gray-200'}`} >
                   
                   <div className="text-sm w-20" >
                     <p className="font-semibold text-gray-600" >{webinar.time}</p>
@@ -33,12 +33,12 @@ function WebinarList() {
                   </div>
 
                     <div className="flex-1 relative" >
-                        <div className="-ml-3 border-l-2 absolute border-teal-300 h-full mx-2 text-white"></div>
+                        <div className="-ml-3 border-l-2 absolute border-teal-300 h-full mx-2 text-white">H</div>
                             <div className="flex items-center space-x-2" >
                                 <span className="text-xs text-gray-600 font-medium" >
                                     {webinar.status =="Live"?(
                                         <h3 className="flex items-center" >
-                                            <span>Live</span> <FontAwesomeIcon className="text-red-500" icon={faVideo}/>
+                                            <span className="pr-3">Live</span> <FontAwesomeIcon className="text-red-500" icon={faVideo}/>
                                         </h3>
                                     ):(
                                         <h3 className="flex items-center" >
@@ -49,7 +49,6 @@ function WebinarList() {
                         </div>
                         <p className="font-semibold" >{webinar.title}</p>
                     </div>
-
                 </div>
               ))}
             </div>

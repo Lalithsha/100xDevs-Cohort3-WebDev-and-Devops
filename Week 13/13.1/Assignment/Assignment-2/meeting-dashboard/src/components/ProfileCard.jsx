@@ -1,5 +1,3 @@
-import React from 'react'
-
 function ProfileCard() {
   return (
     <div className='py-12 px-3 bg-white rounded-xl items-center flex flex-col shadow-lg h-fit w-64 -mt-20 ' >

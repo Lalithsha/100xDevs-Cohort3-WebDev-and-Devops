@@ -1,6 +1,6 @@
-import React from 'react'
 import ProfileCard from './ProfileCard'
 import WebinarList from './WebinarList'
+import MeetButtons from "./MeetButtons"
 
 function Dashboard() {
   return (
@@ -12,8 +12,9 @@ function Dashboard() {
                 <div className='w-full' >
                     <h3 className='text-gray-800 text-lg md:text-xl font-medium' >Monday, 14th October</h3>
                     <h1 className='text-xl md:text-3xl mt-5 lg:mb-10 text-[#0D2149] font-bold' >Good Morning, Lalith! 👋</h1>
-                    <div className='flex flex-col'>
+                    <div className='flex flex-row items-center justify-start gap-8 -mt-5'>
                       <WebinarList/>
+                      <MeetButtons/>
                     </div>
                 </div>
             </div>

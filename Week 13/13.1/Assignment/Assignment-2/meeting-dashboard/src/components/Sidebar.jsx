@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {faBars, faCog, faCreditCard, faHome, faTimes, faUser, faUsers} from '@fortawesome/free-solid-svg-icons'
 
 function Sidebar() {
