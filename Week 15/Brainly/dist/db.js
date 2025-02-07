@@ -37,8 +37,9 @@ exports.linkModel = exports.tagModel = exports.contentModel = exports.userModel 
 const mongoose_1 = __importStar(require("mongoose"));
 // const Schema = Schema;
 const ObjectId = mongoose_1.default.Types.ObjectId; // mongoose.Types.ObjectId
+// UserSchema
 const User = new mongoose_1.Schema({
-    username: { type: String, required: true },
+    username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
 });
 // type contentTypes= ['image'|'video'|'article','audio'];
@@ -53,17 +54,19 @@ const Content = new mongoose_1.Schema({
     link: { type: String, required: true },
     type: { type: String, enum: Object.values(contentTypes), required: true },
     title: { type: String, required: true },
-    tags: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Tag', required: true }], // Tags are array of tag id's referencing the tag model
-    userId: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User', required: true }
+    // tags:[{type: ObjectId, ref:'Tag', required:true}], // Tags are array of tag id's referencing the tag model
+    tags: [{ type: String, ref: 'Tag', required: true }], // Tags are array of tag id's referencing the tag model
+    userId: { type: ObjectId, ref: 'user', required: true }
 });
 const Tag = new mongoose_1.Schema({
     title: { type: String, required: true },
 });
 const Link = new mongoose_1.Schema({
     hash: { type: String, required: true },
-    userId: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User', required: true }
+    userId: { type: ObjectId, ref: 'User', required: true, unique: true }
 });
-exports.userModel = mongoose_1.default.model('user', User);
+// export const userModel = mongoose.model('user',User);
+exports.userModel = (0, mongoose_1.model)('user', User);
 exports.contentModel = mongoose_1.default.model('content', Content);
-exports.tagModel = mongoose_1.default.model('Tag', Tag);
-exports.linkModel = mongoose_1.default.model('Link', Link);
+exports.tagModel = mongoose_1.default.model('tag', Tag);
+exports.linkModel = mongoose_1.default.model('link', Link);

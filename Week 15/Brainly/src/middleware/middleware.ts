@@ -1,10 +1,20 @@
 import { NextFunction, Request, Response } from "express";
-
+import 'dotenv/config'
 import jwt from "jsonwebtoken";
 
-export interface userRequest extends Request{
+/* export interface userRequest extends Request{
     userId: string;
 }
+ */
+
+declare global{
+    namespace Express{
+        interface Request{
+            userId: string;
+        }
+    }
+}
+
 
 /* export const userMiddleware = (req: userRequest, res: Response, next: NextFunction)=>{
 
@@ -22,7 +32,7 @@ export interface userRequest extends Request{
     }
 } */
 
-export const userMilddwareWithCookie = (req:userRequest, res:Response, next:NextFunction)=>{
+export const userMilddwareWithCookie = (req:Request, res:Response, next:NextFunction)=>{
     const token = req.cookies?.access_token;
     console.log("The token from middleware is: ", token)
     if(!token){
@@ -33,7 +43,7 @@ export const userMilddwareWithCookie = (req:userRequest, res:Response, next:Next
 
     try{
 
-        const decoded = jwt.verify(token,process.env.JWT_SECRET as string);
+        const decoded = jwt.verify(token,process.env.JWT_USER_SECRET as string);
         console.log(`The decoded token is:  ${decoded}`);
         if(decoded){
             // req.userId = decoded.id;
@@ -47,7 +57,7 @@ export const userMilddwareWithCookie = (req:userRequest, res:Response, next:Next
         }
     } catch(error){
         res.status(403).json({
-            message:"You are not signed in",
+            message:"Error occurred during token verification",
             error:error
         })
     }

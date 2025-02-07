@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userMilddwareWithCookie = void 0;
+require("dotenv/config");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 /* export const userMiddleware = (req: userRequest, res: Response, next: NextFunction)=>{
 
@@ -30,7 +31,7 @@ const userMilddwareWithCookie = (req, res, next) => {
         });
     }
     try {
-        const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_USER_SECRET);
         console.log(`The decoded token is:  ${decoded}`);
         if (decoded) {
             // req.userId = decoded.id;
@@ -45,7 +46,7 @@ const userMilddwareWithCookie = (req, res, next) => {
     }
     catch (error) {
         res.status(403).json({
-            message: "You are not signed in",
+            message: "Error occurred during token verification",
             error: error
         });
     }
