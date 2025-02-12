@@ -9,6 +9,8 @@ export interface ButtonProps {
   startIcon?: ReactElement;
   endIcon?: React.ReactNode;
   onClick?: () => void;
+  fullWidth?: boolean;
+  loading?: boolean;
 }
 
 const variantStyles = {
@@ -32,11 +34,18 @@ export const Button = ({
   startIcon,
   endIcon,
   onClick,
+  fullWidth,
+  loading,
 }: ButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className={`${variantStyles[variant]} ${defaultStyles} ${sizeStyles[size]}`}
+      className={`${variantStyles[variant]} ${defaultStyles} ${
+        sizeStyles[size]
+      } ${fullWidth ? "w-full items-center justify-center" : ""} ${
+        loading ? "opacity-45" : ""
+      }`}
+      disabled={loading}
     >
       {startIcon ? <div className="pr-2">{startIcon}</div> : null} {text}{" "}
       {endIcon}

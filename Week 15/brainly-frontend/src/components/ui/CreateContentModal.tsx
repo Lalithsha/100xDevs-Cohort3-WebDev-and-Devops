@@ -1,5 +1,6 @@
 import { CrossIcon } from "../../icons/CrossIcon";
 import { Button } from "./Button";
+import { Input } from "./Input";
 
 function CreateContentModal({
   open,
@@ -41,7 +42,7 @@ function CreateContentModal({
 
 export default CreateContentModal;
 
-export function Input({
+/* export function Input({
   onChange,
   placeholder,
 }: {
@@ -58,6 +59,6 @@ export function Input({
       />
     </div>
   );
-}
+} */
 
 export const onChange = () => {};
