@@ -23,9 +23,11 @@ require("dotenv/config");
 const zod_1 = require("zod");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const utils_1 = require("./utils");
+const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
+app.use((0, cors_1.default)());
 app.post("/api/v1/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const requiredBody = zod_1.z.object({
         username: zod_1.z.string().min(4, { message: "Minimum 4 characters required" }).max(20, { message: "username should be less than 20 characters" }),

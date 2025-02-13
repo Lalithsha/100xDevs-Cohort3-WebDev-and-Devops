@@ -9,9 +9,13 @@ import 'dotenv/config'
 import { z } from "zod";
 import cookieParser from "cookie-parser";
 import { random } from "./utils";
+import cors from 'cors';
+
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
+
 app.post("/api/v1/signup", async(req,res):Promise<any>=>{
 
 
