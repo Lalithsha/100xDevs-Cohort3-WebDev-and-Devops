@@ -1,20 +1,20 @@
 // import { useState } from "react";
 import "./App.css";
-/* import { Button } from "./components/ui/Button";
-import Card from "./components/ui/Card";
-import CreateContentModal from "./components/ui/CreateContentModal";
-import { PlusIcon } from "./icons/Plus";
-import { ShareIcon } from "./icons/Share";
-import Sidebar from "./components/ui/Sidebar"; */
 import Dashboard from "./Pages/Dashboard";
+import SignIn from "./Pages/Signin";
 import Signup from "./Pages/Signup";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div>
-      {/* <Dashboard /> */}
-      <Signup />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/" element={<SignIn />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/Dashboard" element={<Dashboard />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
