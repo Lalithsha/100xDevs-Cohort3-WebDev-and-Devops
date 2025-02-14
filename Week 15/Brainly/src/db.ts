@@ -18,7 +18,8 @@ enum contentTypes{
 
 const Content = new Schema({
     link:{type:String, required:true},
-    type:{type:String, enum:Object.values(contentTypes), required:true},
+    // type:{type:String, enum:Object.values(contentTypes), required:true},
+    type:{type:String},
     title:{type:String, required:true},
     // tags:[{type: ObjectId, ref:'Tag', required:true}], // Tags are array of tag id's referencing the tag model
     tags:[{type: String, ref:'Tag', required:true}], // Tags are array of tag id's referencing the tag model
