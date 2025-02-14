@@ -13,6 +13,7 @@ function App() {
         <Route path="/" element={<SignIn />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/share/:shareId" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );
