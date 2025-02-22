@@ -10,10 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const pg_1 = require("pg");
-const pgClient = new pg_1.Client("postgresql://neondb_owner:npg_di7Xg0kUsxec@ep-young-cell-a8f1jqag-pooler.eastus2.azure.neon.tech/neondb?sslmode=require");
+// Way 1 to connect to db
+const pgClient = new pg_1.Client("postgresql://neondb_owner:*********@ep-young-cell-a8f1jqag-pooler.eastus2.azure.neon.tech/neondb?sslmode=require");
+// Way 2 to connect to db
 const pgClinet2 = new pg_1.Client({
     user: "neondb_owner",
-    password: "npg_di7Xg0kUsxec",
+    password: "*******",
     port: 3000,
     host: "ep-young-cell-a8f1jqag-pooler.eastus2.azure.neon.tech",
     database: "neondb",
