@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createTable = createTable;
+exports.dropTable = dropTable;
 const index_1 = require("./index");
 function createTable() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -24,9 +25,20 @@ function createTable() {
         yield index_1.client.query(`
             CREATE TABLE IF NOT EXISTS travel_plans(
                 id SERIAL PRIMARY KEY,
-                FOREIGN KEY user_id REFERENCES users(id),
-                
-            )
+                user_id INTEGER NOT NULL REFERENCES users(id,)
+                title TEXT NOT NULL,
+                destination_city TEXT NOT NULL,
+                destination_country TEXT NOT NULL,
+                start_date DATE NOT NULL DEFAULT CURRENT_DATE
+                end_date DATE NOT NULL DEFAULT CURRENT_DATE
+                budget NUMERIC
+            );
         `);
+    });
+}
+function dropTable() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield index_1.client.query(`DROP TABLE IF EXISTS travel_plans;`);
+        yield index_1.client.query('DROP TALBE IF EXISTS users;');
     });
 }
