@@ -14,7 +14,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@prisma/client");
 const express_1 = __importDefault(require("express"));
-const client = new client_1.PrismaClient();
+// const client = new PrismaClient();
+const client = new client_1.PrismaClient({
+    log: ['query']
+});
 const app = (0, express_1.default)();
 // Basic code to add, find user. 
 function createUser() {
@@ -53,7 +56,7 @@ function getUser() {
     });
 }
 // createUser();
-// findUser();
+findUser();
 // getUser();
 app.get("/users", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const users = yield client.user.findMany();

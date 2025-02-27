@@ -1,6 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import express, { json } from "express";
-const client = new PrismaClient();
+// const client = new PrismaClient();
+const client = new PrismaClient({
+    log:['query']
+})
 
 const app = express();
 
@@ -42,7 +45,7 @@ async function getUser(){
 }
 
 // createUser();
-// findUser();
+findUser();
 // getUser();
 
 
