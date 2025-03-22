@@ -3,11 +3,21 @@ import dotenv from "dotenv";
 import 'dotenv/config';
 import express from "express";
 import cookieParser from "cookie-parser";
-import { userRouter } from "./routes/user";
+// import { userRouter } from "./routes/user";
+import {mainRouter} from "./routes/index"
+// var cors = require('cors')
+import cors from "cors";
 
 const app= express();
 app.use(express.json());
 app.use(cookieParser());
+
+// Cors from localhost
+let corsOption = {
+    origin:['http//localhost:5173']
+}
+
+app.use(cors(corsOption))
 
 const result =  dotenv.config();
 if(result.error){
@@ -23,9 +33,12 @@ async function connectDB(){
     });
 }
 
-app.use("/api/v1/user",userRouter)
-
-
-
 connectDB().catch(err => console.log(err));
+// app.use("/api/v1/user", userRouter)
+app.use("/api/v1/", mainRouter)
+app.listen(3000,()=>{
+    console.log("Server is listening on port 3000");
+})
+
+
 

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import express, { NextFunction, Request, Response, Router } from "express";
 import dotenv from "dotenv";
+import 'dotenv/config';
 import {userModel} from "../db";
 import z from "zod";
 import bcrypt from "bcryptjs";
@@ -17,8 +18,8 @@ userRouter.post("/signup", async (req: Request,res: Response, next: NextFunction
     const requireBody = z.object({
         username: z.string().min(3,{message:"Username must be greater than 3 characters"}).max(20,{message:"Username must be less than 20 characters"}),
         password: z.string().min(6,{message:"Password must be greater than 3 characters"}).max(20),
-        firstName: z.string().min(3,{message:"First name must be greater than 3 characters"}).max(20,{message:"First name must be less than 20 characters"}),
-        lastName: z.string().min(3,{message:"Last name must be greater than 3 characters"}).max(20,{message:"Last name must be less than 20 characters"}),
+        firstname: z.string().min(3,{message:"First name must be greater than 3 characters"}).max(20,{message:"First name must be less than 20 characters"}),
+        lastname: z.string().min(3,{message:"Last name must be greater than 3 characters"}).max(20,{message:"Last name must be less than 20 characters"}),
     })
 
     const parsedDataWithSuccess = requireBody.safeParse(req.body);
@@ -29,22 +30,27 @@ userRouter.post("/signup", async (req: Request,res: Response, next: NextFunction
         return;
     }
 
-    const {username,password,firstName,lastName} = parsedDataWithSuccess.data;
+    const {username,password,firstname,lastname} = parsedDataWithSuccess.data;
    
    try {
         const hashPassword = await bcrypt.hash(password,4);
-        await userModel.create({
+        const user = await userModel.create({
             username,
             password:hashPassword,
-            firstName,
-            lastName
+            firstname,
+            lastname
         })
+
+        const token = sign({id:user._id.toString()},`${process.env.JWT_SECRET }`);
+        
         res.json({
-            message:"Sign up successfull"
+            message:"User created successfully",
+            token
+
         })
     } catch (error) {
-        res.json({
-            message:`User already exists ${error}`
+        res.status(411).json({
+            message:`Email already taken / Incorrect inputs ${error}`
         })
         return; 
     }    
@@ -86,7 +92,7 @@ userRouter.post("/signin", async(req: Request,res: Response, next: NextFunction)
             return;
         }
         else {
-            const token = sign({id:user?._id.toString()},"adfas");
+            const token = sign({id:user?._id.toString()},`${process.env.JWT_SECRET}` );
             res.cookie("access_token",token,{
                 httpOnly:true,
                 secure:true

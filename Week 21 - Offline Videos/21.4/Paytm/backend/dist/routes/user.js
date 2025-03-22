@@ -48,6 +48,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userRouter = exports.userModel = void 0;
 const express_1 = __importStar(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
+require("dotenv/config");
 const db_1 = require("../db");
 Object.defineProperty(exports, "userModel", { enumerable: true, get: function () { return db_1.userModel; } });
 const zod_1 = __importDefault(require("zod"));
@@ -62,32 +63,39 @@ userRouter.post("/signup", (req, res, next) => __awaiter(void 0, void 0, void 0,
     const requireBody = zod_1.default.object({
         username: zod_1.default.string().min(3, { message: "Username must be greater than 3 characters" }).max(20, { message: "Username must be less than 20 characters" }),
         password: zod_1.default.string().min(6, { message: "Password must be greater than 3 characters" }).max(20),
-        firstName: zod_1.default.string().min(3, { message: "First name must be greater than 3 characters" }).max(20, { message: "First name must be less than 20 characters" }),
-        lastName: zod_1.default.string().min(3, { message: "Last name must be greater than 3 characters" }).max(20, { message: "Last name must be less than 20 characters" }),
+        firstname: zod_1.default.string().min(3, { message: "First name must be greater than 3 characters" }).max(20, { message: "First name must be less than 20 characters" }),
+        lastname: zod_1.default.string().min(3, { message: "Last name must be greater than 3 characters" }).max(20, { message: "Last name must be less than 20 characters" }),
     });
     const parsedDataWithSuccess = requireBody.safeParse(req.body);
+    console.log("parsed data", parsedDataWithSuccess);
     if (!parsedDataWithSuccess.success) {
+        console.log(parsedDataWithSuccess.success, "inside the condition");
         res.status(400).json({
             message: parsedDataWithSuccess.error
         });
         return;
     }
-    const { username, password, firstName, lastName } = parsedDataWithSuccess.data;
+    const { username, password, firstname, lastname } = parsedDataWithSuccess.data;
     try {
         const hashPassword = yield bcryptjs_1.default.hash(password, 4);
-        yield db_1.userModel.create({
+        console.log(hashPassword);
+        console.log("The user model is: ", db_1.userModel);
+        const user = yield db_1.userModel.create({
             username,
             password: hashPassword,
-            firstName,
-            lastName
+            firstname,
+            lastname
         });
+        console.log("User creation done successfully", user);
+        const token = (0, jsonwebtoken_1.sign)({ id: user._id.toString() }, `${process.env.JWT_SECRET}`);
         res.json({
-            message: "Sign up successfull"
+            message: "User created successfully",
+            token
         });
     }
     catch (error) {
-        res.json({
-            message: `User already exists ${error}`
+        res.status(411).json({
+            message: `Email already taken / Incorrect inputs ${error}`
         });
         return;
     }
@@ -108,7 +116,13 @@ userRouter.post("/signin", (req, res, next) => __awaiter(void 0, void 0, void 0,
         const user = yield db_1.userModel.findOne({
             username
         });
-        const passwordMatch = bcryptjs_1.default.compare(password, user === null || user === void 0 ? void 0 : user.password);
+        if (!user) {
+            res.status(404).json({
+                message: "User not found"
+            });
+            return;
+        }
+        const passwordMatch = yield bcryptjs_1.default.compare(password, user.password || '');
         if (!passwordMatch) {
             res.json({
                 message: "Password incorrect, Please try again..."
@@ -116,7 +130,8 @@ userRouter.post("/signin", (req, res, next) => __awaiter(void 0, void 0, void 0,
             return;
         }
         else {
-            const token = (0, jsonwebtoken_1.sign)({ id: user === null || user === void 0 ? void 0 : user._id.toString() }, "adfas");
+            console.log("The secret key is: ", process.env.JWT_SECRET);
+            const token = (0, jsonwebtoken_1.sign)({ id: user === null || user === void 0 ? void 0 : user._id.toString() }, `${process.env.JWT_SECRET}`);
             res.cookie("access_token", token, {
                 httpOnly: true,
                 secure: true
@@ -132,3 +147,4 @@ userRouter.post("/signin", (req, res, next) => __awaiter(void 0, void 0, void 0,
         });
     }
 }));
+app.post("/");

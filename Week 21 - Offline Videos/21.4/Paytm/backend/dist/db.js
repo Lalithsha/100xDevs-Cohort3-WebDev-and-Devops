@@ -7,8 +7,8 @@ exports.userModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const { Schema } = mongoose_1.default;
 const userSchema = new Schema({
-    username: { type: String, require: true, minLength: 3, maxLength: 20, unique: true },
-    password: { type: String, require: true, minLength: 6, maxLength: 20 },
+    username: { type: String, require: true, minLength: 3, maxLength: 20, unique: true, trim: true, lowercase: true },
+    password: { type: String, require: true, minLength: 6 },
     firstname: { type: String, require: true, minLength: 3, maxLength: 20 },
     lastname: { type: String, require: true, minLength: 3, maxLength: 20 }
 });

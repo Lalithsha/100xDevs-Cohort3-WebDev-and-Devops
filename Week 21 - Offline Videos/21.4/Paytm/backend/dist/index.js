@@ -17,10 +17,18 @@ const dotenv_1 = __importDefault(require("dotenv"));
 require("dotenv/config");
 const express_1 = __importDefault(require("express"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
-const user_1 = require("./routes/user");
+// import { userRouter } from "./routes/user";
+const index_1 = require("./routes/index");
+// var cors = require('cors')
+const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
+// Cors from localhost
+let corsOption = {
+    origin: ['http//localhost:5173']
+};
+app.use((0, cors_1.default)(corsOption));
 const result = dotenv_1.default.config();
 if (result.error) {
     console.log(result.error);
@@ -34,5 +42,9 @@ function connectDB() {
         });
     });
 }
-app.use("/api/v1/user", user_1.userRouter);
 connectDB().catch(err => console.log(err));
+// app.use("/api/v1/user", userRouter)
+app.use("/api/v1/", index_1.mainRouter);
+app.listen(3000, () => {
+    console.log("Server is listening on port 3000");
+});
