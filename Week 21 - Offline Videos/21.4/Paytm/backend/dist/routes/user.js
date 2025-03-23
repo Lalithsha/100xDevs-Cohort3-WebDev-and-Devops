@@ -54,12 +54,13 @@ Object.defineProperty(exports, "userModel", { enumerable: true, get: function ()
 const zod_1 = __importDefault(require("zod"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = require("jsonwebtoken");
+const authMiddleware_1 = require("../middlewares/authMiddleware");
 const userRouter = (0, express_1.Router)();
 exports.userRouter = userRouter;
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-userRouter.post("/signup", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+userRouter.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const requireBody = zod_1.default.object({
         username: zod_1.default.string().min(3, { message: "Username must be greater than 3 characters" }).max(20, { message: "Username must be less than 20 characters" }),
         password: zod_1.default.string().min(6, { message: "Password must be greater than 3 characters" }).max(20),
@@ -67,9 +68,7 @@ userRouter.post("/signup", (req, res, next) => __awaiter(void 0, void 0, void 0,
         lastname: zod_1.default.string().min(3, { message: "Last name must be greater than 3 characters" }).max(20, { message: "Last name must be less than 20 characters" }),
     });
     const parsedDataWithSuccess = requireBody.safeParse(req.body);
-    console.log("parsed data", parsedDataWithSuccess);
     if (!parsedDataWithSuccess.success) {
-        console.log(parsedDataWithSuccess.success, "inside the condition");
         res.status(400).json({
             message: parsedDataWithSuccess.error
         });
@@ -78,16 +77,13 @@ userRouter.post("/signup", (req, res, next) => __awaiter(void 0, void 0, void 0,
     const { username, password, firstname, lastname } = parsedDataWithSuccess.data;
     try {
         const hashPassword = yield bcryptjs_1.default.hash(password, 4);
-        console.log(hashPassword);
-        console.log("The user model is: ", db_1.userModel);
         const user = yield db_1.userModel.create({
             username,
             password: hashPassword,
             firstname,
             lastname
         });
-        console.log("User creation done successfully", user);
-        const token = (0, jsonwebtoken_1.sign)({ id: user._id.toString() }, `${process.env.JWT_SECRET}`);
+        const token = (0, jsonwebtoken_1.sign)({ id: user._id.toString() }, `${process.env.JWT_USER_SECRET}`);
         res.json({
             message: "User created successfully",
             token
@@ -100,7 +96,7 @@ userRouter.post("/signup", (req, res, next) => __awaiter(void 0, void 0, void 0,
         return;
     }
 }));
-userRouter.post("/signin", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+userRouter.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const requiredBody = zod_1.default.object({
         username: zod_1.default.string().min(3, { message: "Username must be greater than 3 characters" }).max(20, { message: "Username must be less than 20 characters" }),
         password: zod_1.default.string().min(6, { message: "Password must be greater than 3 characters" }).max(20),
@@ -130,8 +126,7 @@ userRouter.post("/signin", (req, res, next) => __awaiter(void 0, void 0, void 0,
             return;
         }
         else {
-            console.log("The secret key is: ", process.env.JWT_SECRET);
-            const token = (0, jsonwebtoken_1.sign)({ id: user === null || user === void 0 ? void 0 : user._id.toString() }, `${process.env.JWT_SECRET}`);
+            const token = (0, jsonwebtoken_1.sign)({ id: user === null || user === void 0 ? void 0 : user._id.toString() }, `${process.env.JWT_USER_SECRET}`);
             res.cookie("access_token", token, {
                 httpOnly: true,
                 secure: true
@@ -147,4 +142,33 @@ userRouter.post("/signin", (req, res, next) => __awaiter(void 0, void 0, void 0,
         });
     }
 }));
-app.post("/");
+userRouter.put("/update", authMiddleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const requiredBody = zod_1.default.object({
+        password: zod_1.default.string().min(6, { message: "Password must be greater than 3 characters" }).max(20).optional(),
+        firstname: zod_1.default.string().min(3, { message: "First name must be greater than 3 characters" }).max(20, { message: "First name must be less than 20 characters" }).optional(),
+        lastname: zod_1.default.string().min(3, { message: "Last na me must be greater than 3 characters" }).max(20, { message: "Last name must be less than 20 characters" }).optional(),
+    });
+    const parsedBodyWithSuccess = requiredBody.safeParse(req.body);
+    if (!parsedBodyWithSuccess.success) {
+        res.status(411).json({
+            message: `Error while updating information`,
+            error: parsedBodyWithSuccess.error
+        });
+    }
+    try {
+        // @ts-ignore
+        const id = req.userId;
+        // @ts-ignore
+        const { password, firstname, lastname } = parsedBodyWithSuccess.data;
+        const result = yield db_1.userModel.updateOne({ _id: id }, { password, firstname, lastname });
+        console.log("The result of updat is: ", result);
+        res.json({
+            message: "Succesfully updated data"
+        });
+    }
+    catch (error) {
+        res.status(411).json({
+            message: "Unexpected error occured"
+        });
+    }
+}));
