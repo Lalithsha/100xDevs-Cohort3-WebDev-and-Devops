@@ -4,7 +4,7 @@ import 'dotenv/config';
 import express from "express";
 import cookieParser from "cookie-parser";
 // import { userRouter } from "./routes/user";
-import {mainRouter} from "./routes/index"
+import {router} from "./routes/index"
 // var cors = require('cors')
 import cors from "cors";
 
@@ -35,10 +35,16 @@ async function connectDB(){
 
 connectDB().catch(err => console.log(err));
 // app.use("/api/v1/user", userRouter)
-app.use("/api/v1/", mainRouter)
+app.use("/api/v1/", router)
 app.listen(3000,()=>{
     console.log("Server is listening on port 3000");
 })
 
-
+declare global{
+    namespace Express{
+        interface Request{
+            userId:string;
+        }
+    }
+}
 

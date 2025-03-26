@@ -44,7 +44,7 @@ function connectDB() {
 }
 connectDB().catch(err => console.log(err));
 // app.use("/api/v1/user", userRouter)
-app.use("/api/v1/", index_1.mainRouter);
+app.use("/api/v1/", index_1.router);
 app.listen(3000, () => {
     console.log("Server is listening on port 3000");
 });

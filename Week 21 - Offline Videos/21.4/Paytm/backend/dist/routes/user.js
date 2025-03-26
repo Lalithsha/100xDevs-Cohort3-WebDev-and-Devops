@@ -84,9 +84,17 @@ userRouter.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, funct
             lastname
         });
         const token = (0, jsonwebtoken_1.sign)({ id: user._id.toString() }, `${process.env.JWT_USER_SECRET}`);
+        const userId = user._id;
+        var balance;
+        balance = 1 + Math.random() * 10000;
+        yield db_1.accountModel.create({
+            userId,
+            balance
+        });
         res.json({
             message: "User created successfully",
-            token
+            token,
+            balance
         });
     }
     catch (error) {
@@ -156,7 +164,6 @@ userRouter.put("/update", authMiddleware_1.authMiddleware, (req, res) => __await
         });
     }
     try {
-        // @ts-ignore
         const id = req.userId;
         // @ts-ignore
         const { password, firstname, lastname } = parsedBodyWithSuccess.data;
@@ -171,4 +178,28 @@ userRouter.put("/update", authMiddleware_1.authMiddleware, (req, res) => __await
             message: "Unexpected error occured"
         });
     }
+}));
+userRouter.get("/bulk", authMiddleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const firstOrLastName = req.query.filter;
+    console.log("The first or last name is ", firstOrLastName);
+    const users = yield db_1.userModel.find({
+        $or: [
+            {
+                firstname: { "$regex": firstOrLastName }
+            },
+            {
+                lastname: { "$regex": firstOrLastName }
+            }
+        ]
+    });
+    res.json({
+        message: "success",
+        user: users.map(user => ({
+            username: user.username,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            _id: user._id
+        }))
+    });
+    return;
 }));

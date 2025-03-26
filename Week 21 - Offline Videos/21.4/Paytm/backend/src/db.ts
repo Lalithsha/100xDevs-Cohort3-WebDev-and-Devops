@@ -9,10 +9,16 @@ const userSchema = new Schema({
     lastname: {type:String, require: true, minLength: 3, maxLength:20}
 })
 
-export const userModel = mongoose.model("User", userSchema);    
 
+const accountSchema = new Schema({
+    userId: {type: Schema.Types.ObjectId, minLength:3, ref:"User", require:true},
+    balance:{type:Number, require:true}
+})
+
+const userModel = mongoose.model("User", userSchema);    
+const accountModel = mongoose.model("Account", accountSchema);
 // export default User;
 
-module.exports={
-    userModel
+export {
+    userModel,  accountModel
 }

@@ -1,11 +1,10 @@
 import express, { Router } from "express";
 import { userRouter } from "../routes/user";
-
+import { accountRouter } from "./account";
 const app = express();
-const mainRouter = Router();
-// app.use("/user",userRouter);
-mainRouter.use("/user", userRouter);
+const router = Router();
 
-export{mainRouter}
+router.use("/user", userRouter);
+router.use("/account", accountRouter)
 
-
+export{router}

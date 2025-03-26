@@ -1,9 +1,8 @@
 import express, { NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
-import {verify} from "jsonwebtoken";
+import jwt, {verify} from "jsonwebtoken";
 import dotenv from "dotenv";
 import "dotenv/config"
-const jwt= require("jsonwebtoken");
 
 const app = express();
 dotenv.config();
@@ -22,11 +21,10 @@ async function authMiddleware(req:Request,res:Response,next:NextFunction){
     try{
         console.log(process.env.JWT_USER_SECRET);
         
-        const decoded = verify(token, process.env.JWT_USER_SECRET!)
-        console.log("decoded value is ", decoded)
+        const decoded = verify(token, process.env.JWT_USER_SECRET as string)
         if(decoded){
             // @ts-ignore
-            req.userId = decoded.id;
+            req.userId = (decoded as jwt.JwtPayload).id;
 
             next();
         }

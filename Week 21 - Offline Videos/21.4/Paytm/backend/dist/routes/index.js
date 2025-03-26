@@ -33,11 +33,12 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.mainRouter = void 0;
+exports.router = void 0;
 const express_1 = __importStar(require("express"));
 const user_1 = require("../routes/user");
+const account_1 = require("./account");
 const app = (0, express_1.default)();
-const mainRouter = (0, express_1.Router)();
-exports.mainRouter = mainRouter;
-// app.use("/user",userRouter);
-mainRouter.use("/user", user_1.userRouter);
+const router = (0, express_1.Router)();
+exports.router = router;
+router.use("/user", user_1.userRouter);
+router.use("/account", account_1.accountRouter);

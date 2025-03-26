@@ -18,7 +18,6 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const jsonwebtoken_1 = require("jsonwebtoken");
 const dotenv_1 = __importDefault(require("dotenv"));
 require("dotenv/config");
-const jwt = require("jsonwebtoken");
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 app.use((0, cookie_parser_1.default)());
@@ -33,15 +32,8 @@ function authMiddleware(req, res, next) {
         }
         try {
             console.log(process.env.JWT_USER_SECRET);
-            // const decoded = verify(token,`${process.env.JWT_USER_SECRET}`)
-            console.log(token);
-            console.log("before the verify");
-            // @ts-ignore
             const decoded = (0, jsonwebtoken_1.verify)(token, process.env.JWT_USER_SECRET);
-            console.log("decoded value is ", decoded);
             if (decoded) {
-                // @ts-ignore
-                console.log(decoded.id);
                 // @ts-ignore
                 req.userId = decoded.id;
                 next();

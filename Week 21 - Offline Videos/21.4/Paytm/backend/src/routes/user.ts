@@ -1,7 +1,7 @@
 import express, { Request, Response, Router } from "express";
 import dotenv from "dotenv";
 import 'dotenv/config';
-import {userModel} from "../db";
+import {userModel, accountModel} from "../db";
 import z from "zod";
 import bcrypt from "bcryptjs";
 import { sign } from "jsonwebtoken";
@@ -41,10 +41,19 @@ userRouter.post("/signup", async (req: Request,res: Response): Promise<void>=>{
         })
 
         const token = sign({id:user._id.toString()},`${process.env.JWT_USER_SECRET }`);
+
+       const userId = user._id;
+       var balance;
+       balance = 1+Math.random()*10000
+       await accountModel.create({
+        userId,
+        balance
+       })
         
         res.json({
             message:"User created successfully",
-            token
+            token,
+            balance
 
         })
     } catch (error) {
@@ -126,7 +135,6 @@ userRouter.put("/update", authMiddleware, async(req:Request, res:Response)=>{
     }
     
     try{
-        // @ts-ignore
         const id = req.userId;
         // @ts-ignore
         const {password, firstname, lastname } = parsedBodyWithSuccess.data;
@@ -142,6 +150,33 @@ userRouter.put("/update", authMiddleware, async(req:Request, res:Response)=>{
         })
     }
     
+})
+
+userRouter.get("/bulk",authMiddleware,async(req,res)=>{
+
+   const firstOrLastName = req.query.filter;
+   console.log("The first or last name is ", firstOrLastName)
+   const users = await userModel.find({
+        $or:[
+            {
+                firstname:{"$regex":firstOrLastName}
+            },
+            {
+                lastname:{"$regex":firstOrLastName}
+            }
+        ]
+   })
+    
+   res.json({
+    message:"success",
+    user: users.map(user=>({
+        username:user.username,
+        firstname:user.firstname,
+        lastname:user.lastname,
+        _id:user._id
+    }))
+   })
+   return;
 })
 
 
