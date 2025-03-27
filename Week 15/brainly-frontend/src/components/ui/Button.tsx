@@ -54,7 +54,23 @@ export const Button = ({
 };
 
 // Better approach.
-/* const getButtonClasses = (
+/* 
+
+type Variant = "primary" | "secondary";
+type Size = "sm" | "md" | "lg";
+
+interface ButtonProps {
+  variant: Variant;
+  size: Size;
+  text: string;
+  startIcon?: ReactElement;
+  endIcon?: React.ReactNode;
+  onClick?: () => void;
+  fullWidth?: boolean;
+  loading?: boolean;
+}
+
+const getButtonClasses = (
   variant: Variant,
   size: Size,
   fullWidth?: boolean,
