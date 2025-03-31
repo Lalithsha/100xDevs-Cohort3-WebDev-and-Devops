@@ -1,15 +1,19 @@
 import { useRef } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
 
 function Signin() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  function signUp() {
+  const navigate = useNavigate();
+
+  function signin() {
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
     console.log(email, password);
+    navigate("/dashboard");
   }
 
   return (
@@ -32,7 +36,7 @@ function Signin() {
             <Input type={"password"} inputName="Password" ref={passwordRef} />
           </div>
           <div className="my-4">
-            <Button buttonName="Signup" size={"large"} onClick={signUp} />
+            <Button buttonName="Signup" size={"large"} onClick={signin} />
           </div>
         </form>
         <h6>

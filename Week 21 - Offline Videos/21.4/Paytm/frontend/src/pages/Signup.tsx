@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const firstnameRef = useRef<HTMLInputElement>(null);
@@ -8,12 +9,15 @@ function Signup() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
+  const navigate = useNavigate();
+
   function signUp() {
     const firstname = firstnameRef.current?.value;
     const lastname = lastnameRef.current?.value;
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
     console.log(firstname, lastname, email, password);
+    navigate("/dashboard");
   }
 
   return (
