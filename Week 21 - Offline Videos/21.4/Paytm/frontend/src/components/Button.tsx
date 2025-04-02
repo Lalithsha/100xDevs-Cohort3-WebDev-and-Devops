@@ -20,16 +20,15 @@ const buttonVariants = cva(
 export type ButtonProps = VariantProps<typeof buttonVariants> & {
   buttonName: string;
   size?: "small" | "medium" | "large";
-  onClick: () => void;
+  onClick?: () => void;
+  type?: "submit" | "button" | "reset";
 };
 
-function Button({ buttonName, size, onClick }: ButtonProps) {
+function Button({ buttonName, size, onClick, type }: ButtonProps) {
   return (
-    <div>
-      <button className={buttonVariants({ size })} onClick={onClick}>
-        {buttonName}
-      </button>
-    </div>
+    <button className={buttonVariants({ size })} onClick={onClick} type={type}>
+      {buttonName}
+    </button>
   );
 }
 

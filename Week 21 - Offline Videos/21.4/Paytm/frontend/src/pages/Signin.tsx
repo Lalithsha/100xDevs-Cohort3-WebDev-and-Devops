@@ -2,6 +2,7 @@ import { useRef } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Signin() {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -9,11 +10,26 @@ function Signin() {
 
   const navigate = useNavigate();
 
-  function signin() {
-    const email = emailRef.current?.value;
+  async function signin() {
+    const username = emailRef.current?.value;
     const password = passwordRef.current?.value;
-    console.log(email, password);
-    navigate("/dashboard");
+    console.log(username, password);
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/user/signin",
+        { username, password }
+      );
+      if (response) {
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.log("Error is :", error);
+    }
+  }
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    signin();
   }
 
   return (
@@ -23,10 +39,10 @@ function Signin() {
           <h2 className="font-bold text-4xl py-2">Sign in</h2>
           <p>Enter your information to create an account</p>
         </div>
-        <form action="">
+        <form onSubmit={handleSubmit}>
           <div>
             <Input
-              type={"email"}
+              type={"text"}
               placeholder="johnedoe@example.com"
               inputName="Email"
               ref={emailRef}
@@ -36,7 +52,7 @@ function Signin() {
             <Input type={"password"} inputName="Password" ref={passwordRef} />
           </div>
           <div className="my-4">
-            <Button buttonName="Signup" size={"large"} onClick={signin} />
+            <Button buttonName="Signup" size={"large"} type={"submit"} />
           </div>
         </form>
         <h6>

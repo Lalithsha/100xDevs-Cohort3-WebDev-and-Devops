@@ -1,14 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "./Button";
+import axios from "axios";
 
 function Users() {
-  const [users, setUsers] = useState([
+  /* const [users, setUsers] = useState([
     {
       firstname: "Lalith",
       lastname: "Sharma",
       _id: "1",
     },
-  ]);
+  ]); */
+  const [users, setUsers] = useState([]);
+
+  const [filter, setFilter] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/v1/user/bulk?filter=" + filter, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setUsers(response.data.user);
+      });
+    console.log(users);
+  }, [filter]);
 
   return (
     <div className="p-2 m-2 flex flex-col">
@@ -18,6 +33,7 @@ function Users() {
           type="text"
           placeholder="Search users..."
           className="w-ful px-2 py-1 border-gray-400 border-1 rounded-md"
+          onChange={(e) => setFilter(e.target.value)}
         />
       </div>
       <div>
