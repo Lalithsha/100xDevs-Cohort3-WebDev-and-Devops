@@ -6,8 +6,8 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 function SignIn() {
-  const usernameRef = useRef<HTMLInputElement>();
-  const passwordRef = useRef<HTMLInputElement>();
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   const navigate = useNavigate();
 

@@ -7,13 +7,13 @@ import jwt from "jsonwebtoken";
 }
  */
 
-declare global{
+/* declare global{
     namespace Express{
         interface Request{
             userId: string;
         }
     }
-}
+} */
 
 
 /* export const userMiddleware = (req: userRequest, res: Response, next: NextFunction)=>{
@@ -39,6 +39,7 @@ export const userMilddwareWithCookie = (req:Request, res:Response, next:NextFunc
         res.status(403).json({
             message:"Token not present"
         })
+        return;
     }
 
     try{
@@ -54,12 +55,14 @@ export const userMilddwareWithCookie = (req:Request, res:Response, next:NextFunc
             res.status(403).json({
                 message:"You are not signed in"
             })
+            return;
         }
     } catch(error){
         res.status(403).json({
             message:"Error occurred during token verification",
             error:error
         })
+        return;
     }
     
 }
