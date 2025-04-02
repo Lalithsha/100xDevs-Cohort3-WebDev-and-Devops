@@ -103,7 +103,8 @@ userRouter.post("/signin", async(req: Request,res: Response)=>{
             const token = sign({id:user?._id.toString()},`${process.env.JWT_USER_SECRET}` );
             res.cookie("access_token",token,{
                 httpOnly:true,
-                secure:true
+                // secure:true // Blocks cookies in HTTP (localhost)
+                secure: process.env.NODE_ENV === 'production'
             }).status(200).json({
                 message:"Sign-in successfull"
             })

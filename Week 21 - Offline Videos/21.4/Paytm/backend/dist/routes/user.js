@@ -137,7 +137,8 @@ userRouter.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, funct
             const token = (0, jsonwebtoken_1.sign)({ id: user === null || user === void 0 ? void 0 : user._id.toString() }, `${process.env.JWT_USER_SECRET}`);
             res.cookie("access_token", token, {
                 httpOnly: true,
-                secure: true
+                // secure:true // Blocks cookies in HTTP (localhost)
+                secure: process.env.NODE_ENV === 'production'
             }).status(200).json({
                 message: "Sign-in successfull"
             });

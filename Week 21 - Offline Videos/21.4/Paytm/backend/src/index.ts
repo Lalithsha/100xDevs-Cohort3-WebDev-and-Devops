@@ -14,7 +14,9 @@ app.use(cookieParser());
 
 // Cors from localhost
 let corsOption = {
-    origin:['http//localhost:5173']
+    origin:['http://localhost:5173'],
+    credentials:true,
+    sameSite: 'lax' // Add this for localhost
 }
 
 app.use(cors(corsOption))

@@ -26,7 +26,9 @@ app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 // Cors from localhost
 let corsOption = {
-    origin: ['http//localhost:5173']
+    origin: ['http://localhost:5173'],
+    credentials: true,
+    sameSite: 'lax' // Add this for localhost
 };
 app.use((0, cors_1.default)(corsOption));
 const result = dotenv_1.default.config();
