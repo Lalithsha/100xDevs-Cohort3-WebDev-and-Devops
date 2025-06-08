@@ -1,5 +1,5 @@
 {
-  "name": "Week 25",
+  "name": "bms",
   "private": true,
   "scripts": {
     "build": "turbo run build",
