@@ -4,31 +4,33 @@ on:
     branches: ["main"]
     paths:
       - "Week 25/bms/**"
+  workflow_dispatch: # Allows manual triggering for testing
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./Week 25/bms
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4 # Updated to latest version
 
       - name: Executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ubuntu
-          password: ${{ secrets.PRIVATE_SSH_KEY }}
+          key: ${{ secrets.PRIVATE_SSH_KEY }}
           # port: ${{ secrets.PORT }}
           script: |
-            echo "Deploying to staging server..."
+            echo "Starting deployment to staging server..."
             cd 100xDevs-Cohort3-WebDev-and-Devops
             cd 'Week 25/bms'
+            echo "Pulling latest changes..."
             git pull origin main
+            echo "Installing dependencies..."
             pnpm install
+            echo "Building project..."
             pnpm run build
+            echo "Restarting PM2 processes..."
             pm2 restart all
             echo "Deployment to staging server completed successfully."
