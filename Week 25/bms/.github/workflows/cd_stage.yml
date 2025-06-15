@@ -25,7 +25,8 @@ jobs:
           # port: ${{ secrets.PORT }}
           script: |
             echo "Deploying to staging server..."
-            cd /Week 25/bms
+            cd 100xDevs-Cohort3-WebDev-and-Devops
+            cd 'Week 25/bms'
             git pull origin main
             pnpm install
             pnpm run build
