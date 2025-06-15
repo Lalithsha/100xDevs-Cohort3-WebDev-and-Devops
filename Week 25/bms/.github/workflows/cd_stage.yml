@@ -2,10 +2,15 @@ name: Deploy to Staging
 on:
   push:
     branches: ["main"]
+    paths:
+      - "Week 25/bms/**"
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Week 25/bms
 
     steps:
       - name: Checkout code
