@@ -1,0 +1,28 @@
+name: Deploy to Staging
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ubuntu
+          password: ${{ secrets.PRIVATE_SSH_KEY }}
+          # port: ${{ secrets.PORT }}
+          script: |
+            echo "Deploying to staging server..."
+            cd /Week 25/bms
+            git pull origin main
+            pnpm install
+            pnpm run build
+            pm2 restart all
+            echo "Deployment to staging server completed successfully."
