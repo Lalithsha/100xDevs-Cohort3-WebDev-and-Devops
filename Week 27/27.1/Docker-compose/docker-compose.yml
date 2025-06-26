@@ -1,4 +1,4 @@
-version: '3.8'
+# version: '3.8'
 services:
   postgres:
     image: postgres:alpine
@@ -7,24 +7,27 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: example_user
-      POSTGRES_PASSWORD: example_password
-      POSTGRES_DB: example_db
-    volumes:
-      - pgdata:/var/lib/postgresql/data 
+      POSTGRES_USER: postgres 
+      POSTGRES_PASSWORD: 2002
+      POSTGRES_DB: postgres  
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5 
 
-    app:
-      build:
-        context: .
-        dockerfile: Dockerfile
-        container_name: docker-test-app
-        environment:
-        - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
-        ports:
-        - "3000:3000"
-        depends_on:
-          - postgres
+  app:
+    build:
+      network: host
+      context: ./
+      dockerfile: Dockerfile
+    container_name: docker-test-app
+    environment:
+      - DATABASE_URL=postgresql://postgres:2002@postgres:5432/postgres
+    ports:
+      - 3000:3000 
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: on-failure
 
-  volumes:
-      pgdata:
-      # driver: local      

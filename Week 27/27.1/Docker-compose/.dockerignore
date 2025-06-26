@@ -1,3 +1,21 @@
-node_modules
-dist
-coverage
+# Dependency directories
+node_modules/
+
+# Build artifact directories
+dist/
+
+# Docker files
+Dockerfile
+docker-compose.yaml
+
+# IDE and OS files
+.vscode/
+.idea/
+*.swp
+
+# Git files
+.git/
+.gitignore
+
+# Environment files
+.env
