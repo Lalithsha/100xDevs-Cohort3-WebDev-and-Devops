@@ -18,6 +18,6 @@ RUN npx prisma generate
 RUN npm run build
 EXPOSE 3000
 
-# CMD ["npm", "start"]
+CMD ["npm", "start"]
 # Use a startup script to handle migrations
-CMD ["sh", "-c", "npx prisma generate && npx prisma migrate deploy && node dist/index.js"]
+# CMD ["sh", "-c", "npx prisma generate && npx prisma migrate deploy && node dist/index.js"]

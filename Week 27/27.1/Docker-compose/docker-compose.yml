@@ -18,7 +18,6 @@ services:
 
   app:
     build:
-      network: host
       context: ./
       dockerfile: Dockerfile
     container_name: docker-test-app
