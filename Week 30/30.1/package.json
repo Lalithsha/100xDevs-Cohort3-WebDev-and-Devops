@@ -1,0 +1,21 @@
+{
+  "name": "ecr_ecs",
+  "module": ".",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.3",
+    "express": "^5.1.0"
+  },
+  "scripts": {
+    "test": "bun test",
+    "build": "bun build src/index.ts --outdir dist --target node18",
+    "run": "bun run src/index.ts",
+    "start": "bun run src/index.ts"
+  }
+}
